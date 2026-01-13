@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Merge PDF Online Free – Toolswa</title>
-<meta name="description" content="Merge PDF files online for free. Drag & drop to reorder PDFs before merging. Fast, secure, client-side Merge PDF tool by Toolswa.">
+<meta name="description" content="Merge multiple PDF files into one PDF online. Fast, secure and client-side Merge PDF tool by Toolswa.">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -30,12 +31,12 @@ body{
   background:#fff;
   padding:40px;
   border-radius:18px;
-  box-shadow:0 20px 30px rgba(0,0,0,.05);
+  box-shadow:0 20px 30px rgba(0,0,0,.06);
 }
-h1{font-size:32px;margin-bottom:10px}
+h1{font-size:32px}
 p{color:#6b7280}
 
-.upload-box{
+.upload{
   border:2px dashed var(--brand);
   padding:35px;
   text-align:center;
@@ -43,39 +44,34 @@ p{color:#6b7280}
   cursor:pointer;
   margin:30px 0;
 }
-.upload-box:hover{background:#fff5f7}
-input[type=file]{display:none}
+.upload:hover{background:#fff5f7}
+input{display:none}
 
-.file-list{margin-top:20px}
-.file-item{
+.file{
   background:#f1f5f9;
-  padding:14px 16px;
+  padding:12px 16px;
   border-radius:12px;
   margin-bottom:10px;
-  font-size:14px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
   cursor:grab;
 }
-.file-item.dragging{opacity:.4}
-.file-item span{font-size:12px;color:#6b7280}
+.file.drag{opacity:.4}
 
 button{
   background:var(--brand);
-  color:#fff;
+  color:white;
   border:none;
-  padding:15px 32px;
+  padding:14px 30px;
   border-radius:50px;
   font-size:16px;
   font-weight:600;
   cursor:pointer;
-  margin-top:20px;
 }
-button:disabled{opacity:.6;cursor:not-allowed}
+button:disabled{opacity:.6}
 
 .note{
-  margin-top:25px;
+  margin-top:20px;
   font-size:13px;
   color:#6b7280;
 }
@@ -85,99 +81,98 @@ button:disabled{opacity:.6;cursor:not-allowed}
 <body>
 
 <div class="container">
-  <div class="card">
-    <h1>Merge PDF Files</h1>
-    <p>Upload PDFs, drag to reorder, then merge into one file — fast & secure.</p>
+<div class="card">
 
-    <label class="upload-box">
-      <strong>Click to Upload PDF Files</strong><br>
-      <small>Drag files to change order</small>
-      <input type="file" id="pdfInput" accept="application/pdf" multiple>
-    </label>
+<h1>Merge PDF Files</h1>
+<p>Select multiple PDFs, reorder them, and merge into one file.</p>
 
-    <div id="fileList" class="file-list"></div>
+<label class="upload">
+<strong>Click to upload PDF files</strong><br>
+<small>Drag files to reorder</small>
+<input type="file" id="fileInput" accept="application/pdf" multiple>
+</label>
 
-    <button id="mergeBtn" disabled>Merge PDF</button>
+<div id="list"></div>
 
-    <div class="note">
-      🔒 Files never leave your device. Everything runs in your browser.
-    </div>
-  </div>
+<button id="mergeBtn" disabled>Merge PDF</button>
+
+<div class="note">🔒 Files never leave your device.</div>
+
+</div>
 </div>
 
-<!-- pdf-lib -->
-<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<!-- ✅ STABLE CDN -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 
 <script>
-const input = document.getElementById('pdfInput');
-const list = document.getElementById('fileList');
-const mergeBtn = document.getElementById('mergeBtn');
+const input = document.getElementById("fileInput");
+const list = document.getElementById("list");
+const btn = document.getElementById("mergeBtn");
 
 let files = [];
-let dragIndex = null;
+let dragItem = null;
 
-input.addEventListener('change', () => {
-  files = Array.from(input.files);
-  renderList();
-});
+input.onchange = () => {
+  files = [...input.files];
+  draw();
+};
 
-function renderList(){
-  list.innerHTML = '';
-  files.forEach((file, index) => {
-    const div = document.createElement('div');
-    div.className = 'file-item';
-    div.draggable = true;
-    div.innerHTML = `<strong>${file.name}</strong><span>Drag</span>`;
+function draw(){
+  list.innerHTML = "";
+  files.forEach((f,i)=>{
+    const d = document.createElement("div");
+    d.className = "file";
+    d.draggable = true;
+    d.innerHTML = `<span>${f.name}</span><span>⇅</span>`;
 
-    div.addEventListener('dragstart', () => {
-      dragIndex = index;
-      div.classList.add('dragging');
-    });
-
-    div.addEventListener('dragend', () => {
-      div.classList.remove('dragging');
-    });
-
-    div.addEventListener('dragover', e => e.preventDefault());
-
-    div.addEventListener('drop', () => {
-      const temp = files[dragIndex];
-      files[dragIndex] = files[index];
-      files[index] = temp;
-      renderList();
-    });
-
-    list.appendChild(div);
+    d.ondragstart = ()=>{ dragItem=i; d.classList.add("drag"); };
+    d.ondragend = ()=> d.classList.remove("drag");
+    d.ondragover = e => e.preventDefault();
+    d.ondrop = ()=>{
+      const temp = files[dragItem];
+      files[dragItem] = files[i];
+      files[i] = temp;
+      draw();
+    };
+    list.appendChild(d);
   });
-
-  mergeBtn.disabled = files.length < 2;
+  btn.disabled = files.length < 2;
 }
 
-mergeBtn.addEventListener('click', async () => {
-  mergeBtn.textContent = "Merging...";
-  mergeBtn.disabled = true;
+btn.onclick = async ()=>{
+  try{
+    btn.textContent="Merging...";
+    btn.disabled=true;
 
-  const mergedPdf = await PDFLib.PDFDocument.create();
+    const merged = await PDFLib.PDFDocument.create();
 
-  for (const file of files) {
-    const bytes = await file.arrayBuffer();
-    const pdf = await PDFLib.PDFDocument.load(bytes);
-    const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-    pages.forEach(p => mergedPdf.addPage(p));
+    for(const file of files){
+      const bytes = await file.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(bytes);
+      const pages = await merged.copyPages(pdf, pdf.getPageIndices());
+      pages.forEach(p=>merged.addPage(p));
+    }
+
+    const out = await merged.save();
+    const blob = new Blob([out],{type:"application/pdf"});
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href=url;
+    a.download="toolswa-merged.pdf";
+    a.click();
+
+    URL.revokeObjectURL(url);
+    btn.textContent="Merge PDF";
+    btn.disabled=false;
+
+  }catch(e){
+    alert("Error while merging PDFs");
+    console.error(e);
+    btn.textContent="Merge PDF";
+    btn.disabled=false;
   }
-
-  const pdfBytes = await mergedPdf.save();
-  const blob = new Blob([pdfBytes], {type:"application/pdf"});
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = "toolswa-merged.pdf";
-  a.click();
-
-  mergeBtn.textContent = "Merge PDF";
-  mergeBtn.disabled = false;
-});
+};
 </script>
 
 </body>
