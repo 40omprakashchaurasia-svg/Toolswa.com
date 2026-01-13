@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Merge PDF Online Free – Toolswa</title>
+<meta name="description" content="Merge multiple PDF files into one single PDF online for free. Fast, secure & high-performance Merge PDF tool by Toolswa.">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --brand:#e11d48;
+  --bg:#f8fafc;
+  --text:#1f2937;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:40px 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:18px;
+  box-shadow:0 20px 30px rgba(0,0,0,.05);
+}
+h1{
+  font-size:32px;
+  margin-bottom:10px;
+}
+p{
+  color:#6b7280;
+}
+.upload-box{
+  border:2px dashed var(--brand);
+  padding:40px;
+  text-align:center;
+  border-radius:16px;
+  cursor:pointer;
+  margin:30px 0;
+}
+.upload-box:hover{
+  background:#fff5f7;
+}
+input[type=file]{
+  display:none;
+}
+.file-list{
+  margin-top:20px;
+}
+.file-item{
+  background:#f1f5f9;
+  padding:12px 15px;
+  border-radius:10px;
+  margin-bottom:10px;
+  font-size:14px;
+}
+button{
+  background:var(--brand);
+  color:white;
+  border:none;
+  padding:15px 30px;
+  border-radius:50px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+.footer-note{
+  margin-top:30px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Merge PDF Files</h1>
+    <p>Combine multiple PDF documents into one single file — fast, secure, and free.</p>
+
+    <label class="upload-box">
+      <strong>Click to Upload PDF Files</strong><br>
+      <small>Multiple files allowed</small>
+      <input type="file" id="pdfInput" accept="application/pdf" multiple>
+    </label>
+
+    <div id="fileList" class="file-list"></div>
+
+    <button id="mergeBtn" disabled>Merge PDF</button>
+
+    <div class="footer-note">
+      🔒 Files are processed locally in your browser. Nothing is uploaded to any server.
+    </div>
+  </div>
+</div>
+
+<!-- pdf-lib (High Performance PDF Library) -->
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+<script>
+const input = document.getElementById('pdfInput');
+const fileListDiv = document.getElementById('fileList');
+const mergeBtn = document.getElementById('mergeBtn');
+
+let files = [];
+
+input.addEventListener('change', () => {
+  files = Array.from(input.files);
+  fileListDiv.innerHTML = '';
+  files.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'file-item';
+    div.textContent = f.name;
+    fileListDiv.appendChild(div);
+  });
+  mergeBtn.disabled = files.length < 2;
+});
+
+mergeBtn.addEventListener('click', async () => {
+  mergeBtn.textContent = "Merging...";
+  mergeBtn.disabled = true;
+
+  const mergedPdf = await PDFLib.PDFDocument.create();
+
+  for (const file of files) {
+    const bytes = await file.arrayBuffer();
+    const pdf = await PDFLib.PDFDocument.load(bytes);
+    const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    pages.forEach(p => mergedPdf.addPage(p));
+  }
+
+  const finalPdf = await mergedPdf.save();
+  const blob = new Blob([finalPdf], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "toolswa-merged.pdf";
+  a.click();
+
+  mergeBtn.textContent = "Merge PDF";
+  mergeBtn.disabled = false;
+});
+</script>
+
+</body>
+</html>
