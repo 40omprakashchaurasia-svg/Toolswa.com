@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="hi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PRIMARY SEO TAGS -->
+    <title>Toolswa - 40+ Free Online PDF, Image, Text & Calculator Tools</title>
+    <meta name="description" content="Toolswa par 40 se zyada free online tools ka upyog karein. PDF merge, Image compress, Age calculator, aur Text formatting tools - sab ek hi jagah par. Fast, Secure aur Easy.">
+    <meta name="keywords" content="Toolswa, free pdf tools, online calculator, image compressor, text tools, merge pdf, age calculator hindi, gst calculator">
+    <meta name="author" content="Toolswa">
+    <link rel="canonical" href="https://www.toolswa.com/">
+
+    <!-- OPEN GRAPH (Social Media SEO) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Toolswa - All-in-One Multi Tool Website">
+    <meta property="og:description" content="Processing files made easy. PDF, Images, Calculators, aur Text Tools - Sabhi 40+ tools ab ek hi jagah par.">
+    <meta property="og:url" content="https://www.toolswa.com/">
+    <meta property="og:image" content="https://www.toolswa.com/og-image.jpg">
+
+    <!-- SCHEMA MARKUP (Google Rich Results) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Toolswa",
+      "url": "https://www.toolswa.com/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.toolswa.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- STYLES & FONTS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: '#e11d48' }
+                }
+            }
+        }
+        function toggleDark() { document.documentElement.classList.toggle('dark'); }
+    </script>
+    
+    <style>
+        .tool-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(0,0,0,0.05); }
+        .tool-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); border-color: #e11d48; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b dark:border-slate-800">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a href="/" class="text-2xl font-black text-brand tracking-tighter" title="Toolswa Home">TOOLSWAs</a>
+                <nav class="hidden md:flex items-center gap-6 text-sm font-bold">
+                    <a href="/" class="hover:text-brand transition">Home</a>
+                    <a href="#pdf-section" class="hover:text-brand transition">PDF Tools</a>
+                    <a href="#calc-section" class="hover:text-brand transition">Calculators</a>
+                    <a href="#image-section" class="hover:text-brand transition">Image Tools</a>
+                </nav>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <select aria-label="Select Language" class="bg-transparent border-none text-xs font-bold focus:ring-0 cursor-pointer">
+                    <option>Language</option>
+                    <option>Hindi</option>
+                    <option>English</option>
+                </select>
+                <button onclick="toggleDark()" aria-label="Toggle Dark Mode" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 transition">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION (SEO H1) -->
+    <section class="py-16 bg-white dark:bg-slate-900 text-center px-4 border-b dark:border-slate-800">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">Free Online All-In-One Toolkit</h1>
+        <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-8 text-lg">Toolswa provides 40+ professional tools to manage your PDF, Images, Text, and perform daily Calculations for free.</p>
+        <div class="max-w-xl mx-auto relative">
+            <label for="tool-search" class="sr-only">Search Tools</label>
+            <input type="text" id="tool-search" placeholder="Search 40+ tools..." class="w-full px-6 py-4 rounded-2xl border dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none focus:ring-2 focus:ring-brand shadow-lg">
+        </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-12">
+
+        <!-- PDF TOOLS SECTION -->
+        <section id="pdf-section" class="mb-20">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-red-600">
+                <i class="fa-solid fa-file-pdf"></i> PDF Management Tools
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center" title="Merge PDF Files">
+                    <i class="fa-solid fa-object-group text-3xl text-red-500 mb-3"></i><h3 class="text-sm font-bold">Merge PDF</h3>
+                </a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center" title="Split PDF Pages">
+                    <i class="fa-solid fa-scissors text-3xl text-red-500 mb-3"></i><h3 class="text-sm font-bold">Split PDF</h3>
+                </a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-compress text-3xl text-red-500 mb-3"></i><h3 class="text-sm font-bold">Compress PDF</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-file-word text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">PDF to Word</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-file-powerpoint text-3xl text-orange-500 mb-3"></i><h3 class="text-sm font-bold">Word to PDF</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-image text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">PDF to JPG</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-images text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">JPG to PDF</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-lock text-3xl text-slate-600 mb-3"></i><h3 class="text-sm font-bold">Protect PDF</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-unlock text-3xl text-yellow-500 mb-3"></i><h3 class="text-sm font-bold">Unlock PDF</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-stamp text-3xl text-pink-500 mb-3"></i><h3 class="text-sm font-bold">Watermark PDF</h3></a></article>
+            </div>
+        </section>
+
+        <!-- CALCULATORS SECTION -->
+        <section id="calc-section" class="mb-20">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-blue-600">
+                <i class="fa-solid fa-calculator"></i> Helpful Online Calculators
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-birthday-cake text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">Age Calculator</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-percent text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">GST Calculator</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-heart-pulse text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">BMI Calculator</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-house-chimney text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">EMI Calculator</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-chart-line text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">SIP Calculator</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-ruler-combined text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">Unit Converter</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-tag text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">Discount Calc</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-flask text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">Scientific Calc</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-calendar-alt text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">Date Calculator</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-wallet text-3xl text-blue-500 mb-3"></i><h3 class="text-sm font-bold">Salary Calc</h3></a></article>
+            </div>
+        </section>
+
+        <!-- IMAGE TOOLS SECTION -->
+        <section id="image-section" class="mb-20">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-green-600">
+                <i class="fa-solid fa-image"></i> Image Optimization Tools
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-compress text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">Compress Image</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-vector-square text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">Resize Image</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-crop text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">Crop Image</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-file-export text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">PNG to JPG</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-file-image text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">JPG to PNG</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-bolt text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">WebP Converter</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-font text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">Image to Text</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-star text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">Favicon Maker</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-qrcode text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">QR Generator</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-wand-magic-sparkles text-3xl text-green-500 mb-3"></i><h3 class="text-sm font-bold">BG Remover</h3></a></article>
+            </div>
+        </section>
+
+        <!-- TEXT TOOLS SECTION -->
+        <section id="text-section" class="mb-20">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-purple-600">
+                <i class="fa-solid fa-font"></i> Text & Content Tools
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-list-numeric text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">Word Counter</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-text-height text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">Case Converter</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-copy text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">Remove Duplicates</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-paragraph text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">Lorem Ipsum</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-link text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">Text to Slug</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-search-plus text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">Find & Replace</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-code text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">Binary to Text</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-arrow-rotate-left text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">Text Reverser</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-brackets-curly text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">JSON Formatter</h3></a></article>
+                <article><a href="#" class="tool-card block bg-white dark:bg-slate-900 p-6 rounded-2xl text-center"><i class="fa-solid fa-sort-alpha-down text-3xl text-purple-500 mb-3"></i><h3 class="text-sm font-bold">Sorter</h3></a></article>
+            </div>
+        </section>
+
+        <!-- SEO SEO ARTICLE (Important for Ranking) -->
+        <section class="mt-20 p-8 bg-white dark:bg-slate-900 rounded-3xl border dark:border-slate-800">
+            <h2 class="text-2xl font-bold mb-4">Why Choose Toolswa for Your Daily Digital Tasks?</h2>
+            <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                Toolswa is a comprehensive online platform designed to simplify your digital life. Whether you are a student, a professional, or a developer, we offer a wide range of tools like **PDF to Word converter**, **Age Calculator**, and **Image Compressor** to help you work faster. 
+            </p>
+            <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                Our tools are 100% free, secure, and require no registration. From **text formatting** to **scientific calculations**, Toolswa is your one-stop solution.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- FOOTER (With Legal Links) -->
+    <footer class="bg-white dark:bg-slate-900 border-t dark:border-slate-800 py-16">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div>
+                <div class="text-2xl font-black text-brand mb-6">TOOLSWAs</div>
+                <p class="text-sm text-slate-500 leading-relaxed">Your secure, fast, and free destination for all online tools. We value your privacy and efficiency.</p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 uppercase text-xs tracking-widest">Resources</h4>
+                <ul class="text-sm space-y-4 text-slate-500">
+                    <li><a href="#" class="hover:text-brand">Home</a></li>
+                    <li><a href="#pdf-section" class="hover:text-brand">PDF Tools</a></li>
+                    <li><a href="#image-section" class="hover:text-brand">Image Tools</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 uppercase text-xs tracking-widest">Legal & Support</h4>
+                <ul class="text-sm space-y-4 text-slate-500">
+                    <li><a href="#" class="hover:text-brand">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-brand">Terms & Conditions</a></li>
+                    <li><a href="#" class="hover:text-brand">Disclaimer</a></li>
+                    <li><a href="#" class="hover:text-brand">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-brand">Support</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 uppercase text-xs tracking-widest">Connect</h4>
+                <div class="flex gap-4 text-2xl text-slate-400">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook hover:text-brand"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter hover:text-brand"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram hover:text-brand"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-16 pt-8 border-t dark:border-slate-800 text-xs text-slate-400">
+            &copy; 2024 Toolswa. Empowering web users worldwide.
+        </div>
+    </footer>
+
+</body>
+</html>
