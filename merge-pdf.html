@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <title>Merge PDF Online Free – Toolswa</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Merge PDF files online for free. Fast, secure, I Love PDF style merge tool by Toolswa.">
+<meta name="description" content="Merge multiple PDF files online for free. Fast, secure, browser-based Merge PDF tool by Toolswa.">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ===== Base ===== */
 body{
   margin:0;
   font-family:Inter,sans-serif;
@@ -22,55 +23,61 @@ body{
 .card{
   background:#fff;
   padding:50px;
-  border-radius:18px;
+  border-radius:22px;
   box-shadow:0 25px 40px rgba(0,0,0,.08);
   text-align:center;
 }
-h1{
-  font-size:32px;
-  margin-bottom:10px;
-}
-.desc{
-  color:#6b7280;
-  margin-bottom:35px;
-}
+h1{font-size:32px;margin-bottom:8px}
+.desc{color:#6b7280;margin-bottom:35px}
 
-/* Upload Box */
+/* ===== Upload Box ===== */
 .upload-box{
   border:2px dashed #e11d48;
-  border-radius:18px;
-  padding:45px 20px;
+  border-radius:22px;
+  padding:50px 20px;
   cursor:pointer;
-  transition:.3s;
+  transition:.25s;
 }
-.upload-box:hover{
-  background:#fff5f7;
-}
-.upload-icon{
-  font-size:42px;
-  margin-bottom:10px;
-}
-.upload-title{
-  font-size:18px;
-  font-weight:600;
-}
-.upload-sub{
+.upload-box:hover{background:#fff5f7}
+.upload-icon{font-size:46px;margin-bottom:12px}
+.upload-title{font-size:18px;font-weight:600}
+.upload-sub{font-size:14px;color:#6b7280}
+
+input[type=file]{display:none}
+
+/* ===== File List ===== */
+.file-info{
+  margin-top:18px;
   font-size:14px;
-  color:#6b7280;
-  margin-top:6px;
+  font-weight:600;
+  color:#374151;
+}
+.file-list{
+  margin-top:12px;
+  text-align:left;
+  max-width:420px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.file-item{
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:13px;
+  margin-bottom:8px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-input[type=file]{
-  display:none;
-}
-
-/* Button */
+/* ===== Button ===== */
 button{
   margin-top:30px;
   background:#e11d48;
   color:#fff;
   border:none;
-  padding:16px 40px;
+  padding:16px 45px;
   font-size:16px;
   font-weight:600;
   border-radius:50px;
@@ -82,7 +89,7 @@ button:disabled{
 }
 
 .note{
-  margin-top:20px;
+  margin-top:18px;
   font-size:13px;
   color:#6b7280;
 }
@@ -96,7 +103,8 @@ button:disabled{
     <h1>Merge PDF Files</h1>
     <p class="desc">Combine PDFs in the order you want. Simple, fast and secure.</p>
 
-    <div class="upload-box" onclick="document.getElementById('pdfInput').click()">
+    <!-- Upload box -->
+    <div class="upload-box" id="uploadBox">
       <div class="upload-icon">📄</div>
       <div class="upload-title">Select PDF files</div>
       <div class="upload-sub">Click to upload multiple PDFs</div>
@@ -104,20 +112,92 @@ button:disabled{
 
     <input type="file" id="pdfInput" accept="application/pdf" multiple>
 
-    <br>
+    <!-- File info -->
+    <div id="fileInfo" class="file-info"></div>
+    <div id="fileList" class="file-list"></div>
 
+    <!-- Action -->
     <button id="mergeBtn" disabled>Merge PDF</button>
 
-    <div class="note">🔒 Files never leave your device</div>
+    <div class="note">🔒 Files are processed locally in your browser.</div>
   </div>
 </div>
 
+<!-- ===== PDF LIB ===== -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
 <script>
+const uploadBox = document.getElementById("uploadBox");
 const input = document.getElementById("pdfInput");
 const btn = document.getElementById("mergeBtn");
+const info = document.getElementById("fileInfo");
+const list = document.getElementById("fileList");
 
-input.addEventListener("change", ()=>{
-  btn.disabled = input.files.length < 2;
+let files = [];
+
+/* Open file picker */
+uploadBox.addEventListener("click", () => input.click());
+
+/* File selection */
+input.addEventListener("change", () => {
+  files = Array.from(input.files);
+  list.innerHTML = "";
+
+  if (files.length > 0) {
+    info.textContent = files.length + " PDF file(s) selected";
+    files.forEach(f => {
+      const div = document.createElement("div");
+      div.className = "file-item";
+      div.textContent = f.name;
+      list.appendChild(div);
+    });
+  } else {
+    info.textContent = "";
+  }
+
+  btn.disabled = files.length < 2;
+});
+
+/* Merge PDFs */
+btn.addEventListener("click", async () => {
+
+  if (typeof PDFLib === "undefined") {
+    alert("PDF engine failed to load. Please refresh the page.");
+    return;
+  }
+
+  try {
+    btn.textContent = "Merging...";
+    btn.disabled = true;
+
+    const mergedPdf = await PDFLib.PDFDocument.create();
+
+    for (const file of files) {
+      const bytes = await file.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(bytes);
+      const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      pages.forEach(p => mergedPdf.addPage(p));
+    }
+
+    const pdfBytes = await mergedPdf.save();
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "toolswa-merged.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+  } catch (err) {
+    alert("Failed to merge PDFs. One or more files may be corrupted or protected.");
+    console.error(err);
+  }
+
+  btn.textContent = "Merge PDF";
+  btn.disabled = false;
 });
 </script>
 
