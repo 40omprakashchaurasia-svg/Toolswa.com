@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Word Counter – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Count words, characters, sentences and reading time online for free. Word Counter by Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+/* Textarea */
+textarea{
+  width:100%;
+  min-height:220px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+  resize:vertical;
+}
+
+/* Stats */
+.stats{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap:15px;
+  margin-top:25px;
+}
+.stat{
+  background:#f9fafb;
+  border-radius:14px;
+  padding:16px;
+  text-align:center;
+  border:1px solid #e5e7eb;
+}
+.stat h3{
+  margin:0;
+  font-size:20px;
+}
+.stat p{
+  margin:6px 0 0;
+  font-size:13px;
+  color:#6b7280;
+}
+
+/* Actions */
+.actions{
+  margin-top:20px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 26px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.clear{
+  background:#6b7280;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Word Counter</h1>
+    <p class="desc">Count words, characters, sentences and reading time.</p>
+
+    <textarea id="text" placeholder="Start typing or paste your text here..."></textarea>
+
+    <div class="stats">
+      <div class="stat">
+        <h3 id="words">0</h3>
+        <p>Words</p>
+      </div>
+      <div class="stat">
+        <h3 id="chars">0</h3>
+        <p>Characters (with spaces)</p>
+      </div>
+      <div class="stat">
+        <h3 id="charsNoSpace">0</h3>
+        <p>Characters (no spaces)</p>
+      </div>
+      <div class="stat">
+        <h3 id="sentences">0</h3>
+        <p>Sentences</p>
+      </div>
+      <div class="stat">
+        <h3 id="paragraphs">0</h3>
+        <p>Paragraphs</p>
+      </div>
+      <div class="stat">
+        <h3 id="reading">0 min</h3>
+        <p>Reading Time</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button onclick="copyText()">Copy Text</button>
+      <button class="clear" onclick="clearText()">Clear</button>
+    </div>
+
+    <div class="note">
+      🔒 Everything runs locally in your browser.
+    </div>
+  </div>
+</div>
+
+<script>
+const textEl = document.getElementById("text");
+
+const wordsEl = document.getElementById("words");
+const charsEl = document.getElementById("chars");
+const charsNoSpaceEl = document.getElementById("charsNoSpace");
+const sentencesEl = document.getElementById("sentences");
+const paragraphsEl = document.getElementById("paragraphs");
+const readingEl = document.getElementById("reading");
+
+textEl.addEventListener("input", updateCounts);
+
+function updateCounts(){
+  const text = textEl.value;
+
+  // Characters
+  charsEl.textContent = text.length;
+  charsNoSpaceEl.textContent = text.replace(/\s/g, "").length;
+
+  // Words
+  const words = text.trim().match(/\b\S+\b/g);
+  const wordCount = words ? words.length : 0;
+  wordsEl.textContent = wordCount;
+
+  // Sentences
+  const sentences = text.match(/[^.!?]+[.!?]+/g);
+  sentencesEl.textContent = sentences ? sentences.length : 0;
+
+  // Paragraphs
+  const paragraphs = text.trim()
+    ? text.trim().split(/\n+/).length
+    : 0;
+  paragraphsEl.textContent = paragraphs;
+
+  // Reading time (200 words/min)
+  const minutes = Math.ceil(wordCount / 200);
+  readingEl.textContent = (minutes || 0) + " min";
+}
+
+function clearText(){
+  textEl.value = "";
+  updateCounts();
+}
+
+function copyText(){
+  textEl.select();
+  document.execCommand("copy");
+  alert("Text copied!");
+}
+</script>
+
+</body>
+</html>
