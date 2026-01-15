@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Discount Calculator – Toolswa</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:Arial;background:#f3f4f6}
+.box{max-width:500px;margin:60px auto;background:#fff;padding:30px;border-radius:15px;text-align:center}
+input,button{width:100%;padding:12px;margin:10px 0}
+button{background:#e11d48;color:#fff;border:none;border-radius:25px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>Discount Calculator</h2>
+<input type="number" id="price" placeholder="Original Price">
+<input type="number" id="disc" placeholder="Discount %">
+<button onclick="calc()">Calculate</button>
+<p id="res"></p>
+</div>
+<script>
+function calc(){
+let p=price.value,d=disc.value;
+let save=p*d/100,final=p-save;
+res.innerText="Final Price: ₹"+final+" (Saved ₹"+save+")";
+}
+</script>
+</body>
+</html>
