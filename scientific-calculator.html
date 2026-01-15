@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Scientific Calculator – Toolswa</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:Arial;background:#f3f4f6}
+.box{max-width:360px;margin:60px auto;background:#fff;padding:20px;border-radius:15px;text-align:center}
+input{width:100%;padding:12px;font-size:18px}
+button{width:22%;padding:10px;margin:4px;font-size:16px}
+</style>
+</head>
+<body>
+<div class="box">
+<h3>Scientific Calculator</h3>
+<input id="screen">
+<br>
+<button onclick="add('sin(')">sin</button>
+<button onclick="add('cos(')">cos</button>
+<button onclick="add('tan(')">tan</button>
+<button onclick="add('Math.sqrt(')">√</button><br>
+<button onclick="add('7')">7</button>
+<button onclick="add('8')">8</button>
+<button onclick="add('9')">9</button>
+<button onclick="add('/')">÷</button><br>
+<button onclick="add('4')">4</button>
+<button onclick="add('5')">5</button>
+<button onclick="add('6')">6</button>
+<button onclick="add('*')">×</button><br>
+<button onclick="add('1')">1</button>
+<button onclick="add('2')">2</button>
+<button onclick="add('3')">3</button>
+<button onclick="add('-')">−</button><br>
+<button onclick="add('0')">0</button>
+<button onclick="add('.')">.</button>
+<button onclick="calc()">=</button>
+<button onclick="add('+')">+</button><br>
+<button onclick="screen.value=''">C</button>
+</div>
+<script>
+function add(v){screen.value+=v}
+function calc(){screen.value=eval(screen.value)}
+</script>
+</body>
+</html>
