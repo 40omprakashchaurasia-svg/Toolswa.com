@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Split PDF Online Free – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Split PDF files online for free. Extract pages or split into multiple PDFs. Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:80px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:50px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+  text-align:center;
+}
+h1{font-size:32px;margin-bottom:8px}
+.desc{color:#6b7280;margin-bottom:35px}
+
+/* Upload */
+.upload-box{
+  border:2px dashed #e11d48;
+  border-radius:22px;
+  padding:50px 20px;
+  cursor:pointer;
+  transition:.25s;
+}
+.upload-box:hover{background:#fff5f7}
+.upload-icon{font-size:46px;margin-bottom:12px}
+.upload-title{font-size:18px;font-weight:600}
+.upload-sub{font-size:14px;color:#6b7280}
+input[type=file]{display:none}
+
+/* File info */
+.file-info{
+  margin-top:18px;
+  font-size:14px;
+  font-weight:600;
+  color:#374151;
+}
+
+/* Options */
+.options{
+  margin-top:25px;
+  text-align:left;
+  max-width:420px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.option{
+  margin-bottom:12px;
+  font-size:14px;
+}
+.option input{
+  margin-right:8px;
+}
+.range-input{
+  margin-top:8px;
+  width:100%;
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+}
+
+/* Button */
+button{
+  margin-top:30px;
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:16px 45px;
+  font-size:16px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Split PDF Files</h1>
+    <p class="desc">Extract pages or split a PDF into multiple files.</p>
+
+    <!-- Upload -->
+    <div class="upload-box" id="uploadBox">
+      <div class="upload-icon">📄</div>
+      <div class="upload-title">Select a PDF file</div>
+      <div class="upload-sub">Click to upload a PDF</div>
+    </div>
+
+    <input type="file" id="pdfInput" accept="application/pdf">
+
+    <!-- File info -->
+    <div id="fileInfo" class="file-info"></div>
+
+    <!-- Split options -->
+    <div class="options">
+      <div class="option">
+        <label>
+          <input type="radio" name="mode" value="all" checked>
+          Split all pages (each page as separate PDF)
+        </label>
+      </div>
+
+      <div class="option">
+        <label>
+          <input type="radio" name="mode" value="range">
+          Extract specific pages
+        </label>
+        <input type="text" id="rangeInput" class="range-input"
+               placeholder="Example: 1-3,5,7">
+      </div>
+    </div>
+
+    <!-- Action -->
+    <button id="splitBtn" disabled>Split PDF</button>
+
+    <div class="note">🔒 Files are processed locally in your browser.</div>
+  </div>
+</div>
+
+<!-- PDF LIB -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+<script>
+const uploadBox = document.getElementById("uploadBox");
+const input = document.getElementById("pdfInput");
+const info = document.getElementById("fileInfo");
+const btn = document.getElementById("splitBtn");
+const rangeInput = document.getElementById("rangeInput");
+
+let file = null;
+
+/* Open picker */
+uploadBox.onclick = () => input.click();
+
+/* File select */
+input.onchange = () => {
+  file = input.files[0];
+  if(file){
+    info.textContent = file.name;
+    btn.disabled = false;
+  }else{
+    info.textContent = "";
+    btn.disabled = true;
+  }
+};
+
+/* Helper: parse range string */
+function parseRange(str, total){
+  let pages = [];
+  str.split(",").forEach(part=>{
+    if(part.includes("-")){
+      let [s,e] = part.split("-").map(n=>parseInt(n));
+      for(let i=s;i<=e;i++) if(i>=1 && i<=total) pages.push(i-1);
+    }else{
+      let p = parseInt(part);
+      if(p>=1 && p<=total) pages.push(p-1);
+    }
+  });
+  return [...new Set(pages)];
+}
+
+/* Split */
+btn.onclick = async () => {
+
+  if (typeof PDFLib === "undefined") {
+    alert("PDF engine failed to load. Please refresh.");
+    return;
+  }
+
+  try{
+    btn.textContent = "Processing...";
+    btn.disabled = true;
+
+    const bytes = await file.arrayBuffer();
+    const srcPdf = await PDFLib.PDFDocument.load(bytes);
+    const totalPages = srcPdf.getPageCount();
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+
+    if(mode === "all"){
+      for(let i=0;i<totalPages;i++){
+        const newPdf = await PDFLib.PDFDocument.create();
+        const [page] = await newPdf.copyPages(srcPdf, [i]);
+        newPdf.addPage(page);
+        const out = await newPdf.save();
+        download(out, `toolswa-page-${i+1}.pdf`);
+      }
+    }else{
+      const pages = parseRange(rangeInput.value, totalPages);
+      if(pages.length === 0){
+        alert("Please enter a valid page range.");
+        btn.textContent = "Split PDF";
+        btn.disabled = false;
+        return;
+      }
+      const newPdf = await PDFLib.PDFDocument.create();
+      const copied = await newPdf.copyPages(srcPdf, pages);
+      copied.forEach(p=>newPdf.addPage(p));
+      const out = await newPdf.save();
+      download(out, "toolswa-extracted-pages.pdf");
+    }
+
+  }catch(e){
+    alert("Failed to split PDF. File may be protected.");
+    console.error(e);
+  }
+
+  btn.textContent = "Split PDF";
+  btn.disabled = false;
+};
+
+/* Download helper */
+function download(bytes, filename){
+  const blob = new Blob([bytes], {type:"application/pdf"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
