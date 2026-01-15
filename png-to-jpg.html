@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>PNG to JPG – Toolswa</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:Arial;background:#f3f4f6}
+.box{max-width:500px;margin:60px auto;background:#fff;padding:30px;border-radius:15px;text-align:center}
+input,button{width:100%;padding:12px;margin:10px 0}
+button{background:#e11d48;color:#fff;border:none;border-radius:25px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>PNG to JPG</h2>
+<input type="file" id="img" accept="image/png">
+<button onclick="convert()">Convert</button>
+</div>
+
+<script>
+function convert(){
+const file=img.files[0];
+const image=new Image();
+image.onload=()=>{
+const c=document.createElement("canvas");
+c.width=image.width;
+c.height=image.height;
+const ctx=c.getContext("2d");
+ctx.fillStyle="#fff";
+ctx.fillRect(0,0,c.width,c.height);
+ctx.drawImage(image,0,0);
+const a=document.createElement("a");
+a.href=c.toDataURL("image/jpeg",0.9);
+a.download="toolswa.jpg";
+a.click();
+};
+image.src=URL.createObjectURL(file);
+}
+</script>
+</body>
+</html>
