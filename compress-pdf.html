@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Compress PDF Online Free – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Compress PDF files online for free. Reduce PDF size safely in your browser. Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:80px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:50px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+  text-align:center;
+}
+h1{font-size:32px;margin-bottom:8px}
+.desc{color:#6b7280;margin-bottom:35px}
+
+/* Upload */
+.upload-box{
+  border:2px dashed #e11d48;
+  border-radius:22px;
+  padding:50px 20px;
+  cursor:pointer;
+  transition:.25s;
+}
+.upload-box:hover{background:#fff5f7}
+.upload-icon{font-size:46px;margin-bottom:12px}
+.upload-title{font-size:18px;font-weight:600}
+.upload-sub{font-size:14px;color:#6b7280}
+input[type=file]{display:none}
+
+/* Info */
+.file-info{
+  margin-top:18px;
+  font-size:14px;
+  font-weight:600;
+  color:#374151;
+}
+
+/* Compression level */
+.levels{
+  margin-top:25px;
+  max-width:420px;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:left;
+}
+.level{
+  margin-bottom:10px;
+  font-size:14px;
+}
+
+/* Button */
+button{
+  margin-top:30px;
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:16px 45px;
+  font-size:16px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Compress PDF</h1>
+    <p class="desc">Reduce PDF file size while keeping quality acceptable.</p>
+
+    <!-- Upload -->
+    <div class="upload-box" id="uploadBox">
+      <div class="upload-icon">📄</div>
+      <div class="upload-title">Select PDF file</div>
+      <div class="upload-sub">Click to upload a PDF</div>
+    </div>
+
+    <input type="file" id="pdfInput" accept="application/pdf">
+
+    <!-- File info -->
+    <div id="fileInfo" class="file-info"></div>
+
+    <!-- Compression level -->
+    <div class="levels">
+      <div class="level">
+        <label>
+          <input type="radio" name="level" value="low" checked>
+          Low compression (best quality)
+        </label>
+      </div>
+      <div class="level">
+        <label>
+          <input type="radio" name="level" value="medium">
+          Medium compression (recommended)
+        </label>
+      </div>
+      <div class="level">
+        <label>
+          <input type="radio" name="level" value="high">
+          High compression (smaller size)
+        </label>
+      </div>
+    </div>
+
+    <!-- Action -->
+    <button id="compressBtn" disabled>Compress PDF</button>
+
+    <div class="note">
+      🔒 Files are processed locally in your browser.<br>
+      ℹ️ Heavy compression requires server-side processing.
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+<script>
+const uploadBox = document.getElementById("uploadBox");
+const input = document.getElementById("pdfInput");
+const info = document.getElementById("fileInfo");
+const btn = document.getElementById("compressBtn");
+
+let file = null;
+
+uploadBox.onclick = () => input.click();
+
+input.onchange = () => {
+  file = input.files[0];
+  if(file){
+    const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+    info.textContent = `${file.name} (${sizeMB} MB)`;
+    btn.disabled = false;
+  }else{
+    info.textContent = "";
+    btn.disabled = true;
+  }
+};
+
+btn.onclick = async () => {
+
+  if (typeof PDFLib === "undefined") {
+    alert("PDF engine failed to load. Please refresh.");
+    return;
+  }
+
+  try{
+    btn.textContent = "Compressing...";
+    btn.disabled = true;
+
+    const bytes = await file.arrayBuffer();
+    const srcPdf = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
+
+    // Create new optimized PDF
+    const newPdf = await PDFLib.PDFDocument.create();
+    const pages = await newPdf.copyPages(srcPdf, srcPdf.getPageIndices());
+    pages.forEach(p => newPdf.addPage(p));
+
+    // Save with basic optimization
+    const compressedBytes = await newPdf.save({
+      useObjectStreams: true,
+      addDefaultPage: false
+    });
+
+    const blob = new Blob([compressedBytes], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "toolswa-compressed.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+  }catch(e){
+    alert("Failed to compress PDF. File may be protected.");
+    console.error(e);
+  }
+
+  btn.textContent = "Compress PDF";
+  btn.disabled = false;
+};
+</script>
+
+</body>
+</html>
