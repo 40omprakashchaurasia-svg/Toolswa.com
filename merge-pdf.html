@@ -1,179 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Upload Section -->
+<div class="upload-box-wrapper">
 
-<title>Merge PDF Online Free – Toolswa</title>
-<meta name="description" content="Merge multiple PDF files into one PDF online. Fast, secure and client-side Merge PDF tool by Toolswa.">
+  <!-- Upload Box -->
+  <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">📄</div>
+    <h3>Select PDF files</h3>
+    <p>Click here to upload multiple PDFs</p>
+    <span class="upload-hint">You can reorder files after upload</span>
+  </div>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Hidden File Input -->
+  <input type="file" id="fileInput" accept="application/pdf" multiple>
 
-<style>
-:root{
-  --brand:#e11d48;
-  --bg:#f8fafc;
-  --text:#1f2937;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:40px 20px;
-}
-.card{
-  background:#fff;
-  padding:40px;
-  border-radius:18px;
-  box-shadow:0 20px 30px rgba(0,0,0,.06);
-}
-h1{font-size:32px}
-p{color:#6b7280}
+</div>
 
-.upload{
-  border:2px dashed var(--brand);
-  padding:35px;
-  text-align:center;
-  border-radius:16px;
-  cursor:pointer;
-  margin:30px 0;
-}
-.upload:hover{background:#fff5f7}
-input{display:none}
-
-.file{
-  background:#f1f5f9;
-  padding:12px 16px;
-  border-radius:12px;
-  margin-bottom:10px;
-  display:flex;
-  justify-content:space-between;
-  cursor:grab;
-}
-.file.drag{opacity:.4}
-
-button{
-  background:var(--brand);
-  color:white;
-  border:none;
-  padding:14px 30px;
-  border-radius:50px;
-  font-size:16px;
-  font-weight:600;
-  cursor:pointer;
-}
-button:disabled{opacity:.6}
-
-.note{
-  margin-top:20px;
-  font-size:13px;
-  color:#6b7280;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-<div class="card">
-
-<h1>Merge PDF Files</h1>
-<p>Select multiple PDFs, reorder them, and merge into one file.</p>
-
-<label class="upload">
-<strong>Click to upload PDF files</strong><br>
-<small>Drag files to reorder</small>
-<input type="file" id="fileInput" accept="application/pdf" multiple>
-</label>
-
+<!-- Selected Files List -->
 <div id="list"></div>
 
-<button id="mergeBtn" disabled>Merge PDF</button>
-
-<div class="note">🔒 Files never leave your device.</div>
-
+<!-- Action Button -->
+<div class="action-area">
+  <button id="mergeBtn" disabled>Merge PDF</button>
 </div>
-</div>
-
-<!-- ✅ STABLE CDN -->
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-
-<script>
-const input = document.getElementById("fileInput");
-const list = document.getElementById("list");
-const btn = document.getElementById("mergeBtn");
-
-let files = [];
-let dragItem = null;
-
-input.onchange = () => {
-  files = [...input.files];
-  draw();
-};
-
-function draw(){
-  list.innerHTML = "";
-  files.forEach((f,i)=>{
-    const d = document.createElement("div");
-    d.className = "file";
-    d.draggable = true;
-    d.innerHTML = `<span>${f.name}</span><span>⇅</span>`;
-
-    d.ondragstart = ()=>{ dragItem=i; d.classList.add("drag"); };
-    d.ondragend = ()=> d.classList.remove("drag");
-    d.ondragover = e => e.preventDefault();
-    d.ondrop = ()=>{
-      const temp = files[dragItem];
-      files[dragItem] = files[i];
-      files[i] = temp;
-      draw();
-    };
-    list.appendChild(d);
-  });
-  btn.disabled = files.length < 2;
-}
-
-btn.onclick = async ()=>{
-  try{
-    btn.textContent="Merging...";
-    btn.disabled=true;
-
-    const merged = await PDFLib.PDFDocument.create();
-
-    for(const file of files){
-      const bytes = await file.arrayBuffer();
-      const pdf = await PDFLib.PDFDocument.load(bytes);
-      const pages = await merged.copyPages(pdf, pdf.getPageIndices());
-      pages.forEach(p=>merged.addPage(p));
-    }
-
-    const out = await merged.save();
-    const blob = new Blob([out],{type:"application/pdf"});
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href=url;
-    a.download="toolswa-merged.pdf";
-    a.click();
-
-    URL.revokeObjectURL(url);
-    btn.textContent="Merge PDF";
-    btn.disabled=false;
-
-  }catch(e){
-    alert("Error while merging PDFs");
-    console.error(e);
-    btn.textContent="Merge PDF";
-    btn.disabled=false;
-  }
-};
-</script>
-
-</body>
-</html>
