@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Favicon Maker – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Create favicon icons online for free. Generate favicon sizes easily with Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:80px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:50px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+  text-align:center;
+}
+h1{font-size:32px;margin-bottom:8px}
+.desc{color:#6b7280;margin-bottom:35px}
+
+/* Upload */
+.upload-box{
+  border:2px dashed #e11d48;
+  border-radius:22px;
+  padding:50px 20px;
+  cursor:pointer;
+  transition:.25s;
+}
+.upload-box:hover{background:#fff5f7}
+.upload-icon{font-size:46px;margin-bottom:12px}
+.upload-title{font-size:18px;font-weight:600}
+.upload-sub{font-size:14px;color:#6b7280}
+input[type=file]{display:none}
+
+/* Button */
+button{
+  margin-top:30px;
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:16px 45px;
+  font-size:16px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.preview{
+  margin-top:25px;
+}
+.preview img{
+  width:64px;
+  height:64px;
+  border-radius:8px;
+  border:1px solid #e5e7eb;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Favicon Maker</h1>
+    <p class="desc">Generate favicon icons for your website instantly.</p>
+
+    <!-- Upload -->
+    <div class="upload-box" id="uploadBox">
+      <div class="upload-icon">⭐</div>
+      <div class="upload-title">Upload Image</div>
+      <div class="upload-sub">PNG, JPG, WEBP supported</div>
+    </div>
+
+    <input type="file" id="imgInput" accept="image/*">
+
+    <div class="preview" id="preview"></div>
+
+    <button id="downloadBtn" disabled>Create & Download Favicon</button>
+
+    <div class="note">
+      🔒 Images are processed locally in your browser.
+    </div>
+  </div>
+</div>
+
+<!-- ZIP library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script>
+const uploadBox = document.getElementById("uploadBox");
+const input = document.getElementById("imgInput");
+const preview = document.getElementById("preview");
+const downloadBtn = document.getElementById("downloadBtn");
+
+let img = new Image();
+let file = null;
+
+const sizes = [16,32,48,64,128,256];
+
+uploadBox.onclick = () => input.click();
+
+input.onchange = () => {
+  file = input.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    img.src = e.target.result;
+    preview.innerHTML = `<img src="${e.target.result}" alt="preview">`;
+    downloadBtn.disabled = false;
+  };
+  reader.readAsDataURL(file);
+};
+
+downloadBtn.onclick = async () => {
+  downloadBtn.textContent = "Creating...";
+  downloadBtn.disabled = true;
+
+  const zip = new JSZip();
+
+  for(const size of sizes){
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, size, size);
+
+    const dataURL = canvas.toDataURL("image/png");
+    const base64 = dataURL.split(",")[1];
+    zip.file(`favicon-${size}x${size}.png`, base64, {base64:true});
+  }
+
+  const blob = await zip.generateAsync({type:"blob"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "toolswa-favicon.zip";
+  a.click();
+  URL.revokeObjectURL(a.href);
+
+  downloadBtn.textContent = "Create & Download Favicon";
+  downloadBtn.disabled = false;
+};
+</script>
+
+</body>
+</html>
