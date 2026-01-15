@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Image to Text (OCR) – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Convert image to text online using OCR. Extract text from images easily with Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:80px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:50px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+  text-align:center;
+}
+h1{font-size:32px;margin-bottom:8px}
+.desc{color:#6b7280;margin-bottom:35px}
+
+/* Upload */
+.upload-box{
+  border:2px dashed #e11d48;
+  border-radius:22px;
+  padding:50px 20px;
+  cursor:pointer;
+  transition:.25s;
+}
+.upload-box:hover{background:#fff5f7}
+.upload-icon{font-size:46px;margin-bottom:12px}
+.upload-title{font-size:18px;font-weight:600}
+.upload-sub{font-size:14px;color:#6b7280}
+input[type=file]{display:none}
+
+/* Button */
+button{
+  margin-top:25px;
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:14px 40px;
+  font-size:15px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+/* Output */
+textarea{
+  width:100%;
+  min-height:220px;
+  margin-top:25px;
+  padding:15px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+  resize:vertical;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Image to Text</h1>
+    <p class="desc">Extract text from images using OCR technology.</p>
+
+    <!-- Upload -->
+    <div class="upload-box" id="uploadBox">
+      <div class="upload-icon">🖼️</div>
+      <div class="upload-title">Select Image</div>
+      <div class="upload-sub">JPG, PNG, WEBP supported</div>
+    </div>
+
+    <input type="file" id="imgInput" accept="image/*">
+
+    <!-- Action -->
+    <button id="convertBtn" disabled>Extract Text</button>
+
+    <!-- Output -->
+    <textarea id="output" placeholder="Extracted text will appear here..."></textarea>
+
+    <div class="note">
+      🔒 Image is processed locally in your browser.<br>
+      ℹ️ Clear images give best OCR results.
+    </div>
+  </div>
+</div>
+
+<!-- OCR Library -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+<script>
+const uploadBox = document.getElementById("uploadBox");
+const input = document.getElementById("imgInput");
+const btn = document.getElementById("convertBtn");
+const output = document.getElementById("output");
+
+let file = null;
+
+uploadBox.onclick = () => input.click();
+
+input.onchange = () => {
+  file = input.files[0];
+  btn.disabled = !file;
+};
+
+btn.onclick = async () => {
+  if(!file) return;
+
+  btn.textContent = "Reading...";
+  btn.disabled = true;
+  output.value = "";
+
+  try{
+    const result = await Tesseract.recognize(
+      file,
+      "eng",
+      { logger: m => console.log(m) }
+    );
+    output.value = result.data.text;
+  }catch(e){
+    alert("Failed to extract text.");
+    console.error(e);
+  }
+
+  btn.textContent = "Extract Text";
+  btn.disabled = false;
+};
+</script>
+
+</body>
+</html>
