@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GST Calculator – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calculate GST amount easily. Free GST Calculator by Toolswa.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;font-family:Inter,sans-serif;background:#f3f4f6}
+.container{max-width:600px;margin:80px auto;padding:0 20px}
+.card{background:#fff;padding:40px;border-radius:20px;box-shadow:0 25px 40px rgba(0,0,0,.08);text-align:center}
+h1{margin-bottom:10px}
+.desc{color:#6b7280;margin-bottom:30px}
+input,select{width:100%;padding:12px;margin-bottom:15px;border-radius:10px;border:1px solid #e5e7eb}
+button{background:#e11d48;color:#fff;border:none;padding:14px 40px;border-radius:50px;font-size:16px;font-weight:600;cursor:pointer}
+.result{margin-top:25px;font-size:16px;font-weight:600}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="card">
+    <h1>GST Calculator</h1>
+    <p class="desc">Calculate GST amount and total price</p>
+
+    <input type="number" id="price" placeholder="Original Price">
+    <select id="gst">
+      <option value="5">5%</option>
+      <option value="12">12%</option>
+      <option value="18" selected>18%</option>
+      <option value="28">28%</option>
+    </select>
+
+    <button onclick="calcGST()">Calculate GST</button>
+    <div id="result" class="result"></div>
+  </div>
+</div>
+
+<script>
+function calcGST(){
+  const price = document.getElementById("price").value;
+  const rate = document.getElementById("gst").value;
+  if(!price){ alert("Enter price"); return; }
+  const gstAmt = (price * rate) / 100;
+  const total = Number(price) + gstAmt;
+  document.getElementById("result").innerText =
+    `GST: ₹${gstAmt.toFixed(2)} | Total: ₹${total.toFixed(2)}`;
+}
+</script>
+</body>
+</html>
