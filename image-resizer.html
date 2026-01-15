@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Image Resizer – Toolswa</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:Arial;background:#f3f4f6}
+.box{max-width:500px;margin:60px auto;background:#fff;padding:30px;border-radius:15px;text-align:center}
+input,button{width:100%;padding:12px;margin:10px 0}
+button{background:#e11d48;color:#fff;border:none;border-radius:25px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>Image Resizer</h2>
+<input type="file" id="img" accept="image/*">
+<input type="number" id="w" placeholder="Width (px)">
+<input type="number" id="h" placeholder="Height (px)">
+<button onclick="resize()">Resize Image</button>
+</div>
+
+<script>
+function resize(){
+const file=img.files[0];
+const image=new Image();
+image.onload=()=>{
+const c=document.createElement("canvas");
+c.width=w.value||image.width;
+c.height=h.value||image.height;
+c.getContext("2d").drawImage(image,0,0,c.width,c.height);
+const a=document.createElement("a");
+a.href=c.toDataURL("image/jpeg",0.9);
+a.download="toolswa-resized.jpg";
+a.click();
+};
+image.src=URL.createObjectURL(file);
+}
+</script>
+</body>
+</html>
