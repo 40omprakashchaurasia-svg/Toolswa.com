@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>WEBP Converter – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Convert WEBP images to JPG or PNG and JPG/PNG to WEBP online for free. Toolswa WEBP Converter.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:80px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:50px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+  text-align:center;
+}
+h1{font-size:32px;margin-bottom:8px}
+.desc{color:#6b7280;margin-bottom:35px}
+
+/* Upload */
+.upload-box{
+  border:2px dashed #e11d48;
+  border-radius:22px;
+  padding:50px 20px;
+  cursor:pointer;
+  transition:.25s;
+}
+.upload-box:hover{background:#fff5f7}
+.upload-icon{font-size:46px;margin-bottom:12px}
+.upload-title{font-size:18px;font-weight:600}
+.upload-sub{font-size:14px;color:#6b7280}
+input[type=file]{display:none}
+
+/* Controls */
+.controls{
+  margin-top:25px;
+  max-width:420px;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:left;
+}
+.controls label{
+  display:block;
+  font-size:14px;
+  margin-bottom:6px;
+}
+.controls select,
+.controls input[type=range]{
+  width:100%;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  margin-bottom:14px;
+}
+
+/* Button */
+button{
+  margin-top:20px;
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:16px 45px;
+  font-size:16px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.info{
+  margin-top:15px;
+  font-size:14px;
+  font-weight:600;
+  color:#374151;
+}
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>WEBP Converter</h1>
+    <p class="desc">Convert WEBP images to JPG/PNG or JPG/PNG to WEBP.</p>
+
+    <!-- Upload -->
+    <div class="upload-box" id="uploadBox">
+      <div class="upload-icon">🖼️</div>
+      <div class="upload-title">Select Image</div>
+      <div class="upload-sub">WEBP, JPG, PNG supported</div>
+    </div>
+
+    <input type="file" id="imgInput" accept="image/*">
+
+    <!-- Controls -->
+    <div class="controls">
+      <label>Convert to</label>
+      <select id="format">
+        <option value="image/jpeg">JPG</option>
+        <option value="image/png">PNG</option>
+        <option value="image/webp">WEBP</option>
+      </select>
+
+      <label>Quality (for JPG / WEBP)</label>
+      <input type="range" id="quality" min="10" max="90" value="80">
+    </div>
+
+    <div id="info" class="info"></div>
+
+    <!-- Action -->
+    <button id="convertBtn" disabled>Convert Image</button>
+
+    <div class="note">
+      🔒 Images are processed locally in your browser.
+    </div>
+  </div>
+</div>
+
+<script>
+const uploadBox = document.getElementById("uploadBox");
+const input = document.getElementById("imgInput");
+const btn = document.getElementById("convertBtn");
+const formatSel = document.getElementById("format");
+const qualityInput = document.getElementById("quality");
+const info = document.getElementById("info");
+
+let file = null;
+let img = new Image();
+
+uploadBox.onclick = () => input.click();
+
+input.onchange = () => {
+  file = input.files[0];
+  if(file){
+    info.textContent = `Selected: ${file.name}`;
+    btn.disabled = false;
+  }else{
+    info.textContent = "";
+    btn.disabled = true;
+  }
+};
+
+btn.onclick = () => {
+  btn.textContent = "Converting...";
+  btn.disabled = true;
+
+  const reader = new FileReader();
+  reader.onload = e => img.src = e.target.result;
+  reader.readAsDataURL(file);
+
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    const ctx = canvas.getContext("2d");
+    // White background for JPG
+    if(formatSel.value === "image/jpeg"){
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+    }
+    ctx.drawImage(img, 0, 0);
+
+    const quality = qualityInput.value / 100;
+    const dataURL = canvas.toDataURL(formatSel.value, quality);
+
+    const ext = formatSel.value.split("/")[1];
+    const a = document.createElement("a");
+    a.href = dataURL;
+    a.download = "toolswa-converted." + ext;
+    a.click();
+
+    btn.textContent = "Convert Image";
+    btn.disabled = false;
+  };
+};
+</script>
+
+</body>
+</html>
