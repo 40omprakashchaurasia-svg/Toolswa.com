@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EMI Calculator – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calculate loan EMI easily. Free EMI Calculator by Toolswa.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;font-family:Inter,sans-serif;background:#f3f4f6}
+.container{max-width:600px;margin:80px auto;padding:0 20px}
+.card{background:#fff;padding:40px;border-radius:20px;box-shadow:0 25px 40px rgba(0,0,0,.08);text-align:center}
+h1{margin-bottom:10px}
+.desc{color:#6b7280;margin-bottom:30px}
+input{width:100%;padding:12px;margin-bottom:15px;border-radius:10px;border:1px solid #e5e7eb}
+button{background:#e11d48;color:#fff;border:none;padding:14px 40px;border-radius:50px;font-size:16px;font-weight:600;cursor:pointer}
+.result{margin-top:25px;font-size:16px;font-weight:600}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="card">
+    <h1>EMI Calculator</h1>
+    <p class="desc">Calculate monthly loan EMI</p>
+
+    <input type="number" id="amount" placeholder="Loan Amount">
+    <input type="number" id="rate" placeholder="Interest Rate (%)">
+    <input type="number" id="tenure" placeholder="Tenure (years)">
+
+    <button onclick="calcEMI()">Calculate EMI</button>
+    <div id="result" class="result"></div>
+  </div>
+</div>
+
+<script>
+function calcEMI(){
+  const P = document.getElementById("amount").value;
+  const r = document.getElementById("rate").value / 12 / 100;
+  const n = document.getElementById("tenure").value * 12;
+  if(!P || !r || !n){ alert("Fill all fields"); return; }
+  const emi = (P * r * Math.pow(1+r,n)) / (Math.pow(1+r,n)-1);
+  document.getElementById("result").innerText = "Monthly EMI: ₹" + emi.toFixed(2);
+}
+</script>
+</body>
+</html>
