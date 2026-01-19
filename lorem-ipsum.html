@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lorem Ipsum Generator – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Generate Lorem Ipsum dummy text online. Paragraphs, sentences or words generator by Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+/* Controls */
+.controls{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+.controls input,
+.controls select{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+}
+
+/* Buttons */
+.buttons{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 24px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.secondary{
+  background:#6b7280;
+}
+
+/* Output */
+textarea{
+  width:100%;
+  min-height:220px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+  resize:vertical;
+  margin-top:20px;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Lorem Ipsum Generator</h1>
+    <p class="desc">Generate dummy text for design, layout and testing.</p>
+
+    <div class="controls">
+      <input type="number" id="count" value="3" min="1">
+      <select id="type">
+        <option value="paragraph">Paragraphs</option>
+        <option value="sentence">Sentences</option>
+        <option value="word">Words</option>
+      </select>
+    </div>
+
+    <div class="buttons">
+      <button onclick="generate()">Generate</button>
+      <button class="secondary" onclick="copyText()">Copy</button>
+      <button class="secondary" onclick="clearText()">Clear</button>
+    </div>
+
+    <textarea id="output" placeholder="Generated text will appear here..."></textarea>
+
+    <div class="note">
+      🔒 Everything runs locally in your browser.
+    </div>
+  </div>
+</div>
+
+<script>
+const loremWords = `
+lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt
+ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation
+ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in
+reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur
+sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum
+`.trim().split(" ");
+
+function generate(){
+  const count = parseInt(document.getElementById("count").value);
+  const type = document.getElementById("type").value;
+  let result = "";
+
+  if(type === "word"){
+    for(let i=0;i<count;i++){
+      result += loremWords[i % loremWords.length] + " ";
+    }
+  }
+
+  if(type === "sentence"){
+    for(let i=0;i<count;i++){
+      let sentence = "";
+      const len = 8 + Math.floor(Math.random()*8);
+      for(let j=0;j<len;j++){
+        sentence += loremWords[(i+j) % loremWords.length] + " ";
+      }
+      result += sentence.trim() + ". ";
+    }
+  }
+
+  if(type === "paragraph"){
+    for(let i=0;i<count;i++){
+      let para = "";
+      for(let s=0;s<4;s++){
+        let sentence = "";
+        const len = 8 + Math.floor(Math.random()*8);
+        for(let j=0;j<len;j++){
+          sentence += loremWords[(i+j+s) % loremWords.length] + " ";
+        }
+        para += sentence.trim() + ". ";
+      }
+      result += para.trim() + "\n\n";
+    }
+  }
+
+  document.getElementById("output").value = result.trim();
+}
+
+function clearText(){
+  document.getElementById("output").value = "";
+}
+
+function copyText(){
+  const out = document.getElementById("output");
+  out.select();
+  document.execCommand("copy");
+  alert("Text copied!");
+}
+</script>
+
+</body>
+</html>
