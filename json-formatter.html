@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JSON Formatter – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Format, beautify and minify JSON online for free. Fast JSON Formatter by Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:1000px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+/* Editor */
+textarea{
+  width:100%;
+  min-height:260px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+  font-family:monospace;
+  resize:vertical;
+}
+
+/* Buttons */
+.buttons{
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 24px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.secondary{
+  background:#6b7280;
+}
+
+/* Info */
+.info{
+  margin-top:12px;
+  font-size:13px;
+  font-weight:600;
+}
+.success{color:#059669}
+.error{color:#dc2626}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>JSON Formatter</h1>
+    <p class="desc">Format, beautify or minify your JSON data instantly.</p>
+
+    <textarea id="jsonInput" placeholder='Paste your JSON here...'></textarea>
+
+    <div class="buttons">
+      <button onclick="formatJSON()">Format JSON</button>
+      <button onclick="minifyJSON()">Minify JSON</button>
+      <button class="secondary" onclick="copyJSON()">Copy</button>
+      <button class="secondary" onclick="clearJSON()">Clear</button>
+    </div>
+
+    <div id="info" class="info"></div>
+
+    <div class="note">
+      🔒 JSON is processed locally in your browser.
+    </div>
+  </div>
+</div>
+
+<script>
+const input = document.getElementById("jsonInput");
+const info = document.getElementById("info");
+
+function formatJSON(){
+  try{
+    const obj = JSON.parse(input.value);
+    input.value = JSON.stringify(obj, null, 2);
+    info.textContent = "JSON formatted successfully.";
+    info.className = "info success";
+  }catch(e){
+    info.textContent = "Invalid JSON format.";
+    info.className = "info error";
+  }
+}
+
+function minifyJSON(){
+  try{
+    const obj = JSON.parse(input.value);
+    input.value = JSON.stringify(obj);
+    info.textContent = "JSON minified successfully.";
+    info.className = "info success";
+  }catch(e){
+    info.textContent = "Invalid JSON format.";
+    info.className = "info error";
+  }
+}
+
+function copyJSON(){
+  if(!input.value) return;
+  input.select();
+  document.execCommand("copy");
+  info.textContent = "JSON copied!";
+  info.className = "info success";
+}
+
+function clearJSON(){
+  input.value = "";
+  info.textContent = "";
+}
+</script>
+
+</body>
+</html>
