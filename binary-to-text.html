@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Binary to Text Converter – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Convert Binary to Text and Text to Binary online for free. Fast and secure Binary Converter by Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+/* Inputs */
+textarea{
+  width:100%;
+  min-height:200px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+  resize:vertical;
+}
+
+/* Buttons */
+.buttons{
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 24px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.secondary{
+  background:#6b7280;
+}
+
+/* Info */
+.info{
+  margin-top:12px;
+  font-size:13px;
+  color:#374151;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Binary ↔ Text Converter</h1>
+    <p class="desc">Convert Binary to Text or Text to Binary instantly.</p>
+
+    <textarea id="input" placeholder="Enter binary (e.g. 01001000 01101001) or text..."></textarea>
+
+    <div class="buttons">
+      <button onclick="binaryToText()">Binary → Text</button>
+      <button onclick="textToBinary()">Text → Binary</button>
+      <button class="secondary" onclick="copyOutput()">Copy</button>
+      <button class="secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <textarea id="output" placeholder="Result will appear here..." readonly></textarea>
+
+    <div id="info" class="info"></div>
+
+    <div class="note">
+      🔒 Everything works locally in your browser.
+    </div>
+  </div>
+</div>
+
+<script>
+const input = document.getElementById("input");
+const output = document.getElementById("output");
+const info = document.getElementById("info");
+
+function binaryToText(){
+  const value = input.value.trim();
+  if(!value){
+    info.textContent = "Please enter binary data.";
+    return;
+  }
+
+  const parts = value.split(/\s+/);
+  let result = "";
+
+  for(const bin of parts){
+    if(!/^[01]+$/.test(bin)){
+      info.textContent = "Invalid binary detected.";
+      return;
+    }
+    result += String.fromCharCode(parseInt(bin, 2));
+  }
+
+  output.value = result;
+  info.textContent = "Binary converted to text.";
+}
+
+function textToBinary(){
+  const text = input.value;
+  if(!text){
+    info.textContent = "Please enter text.";
+    return;
+  }
+
+  let binary = [];
+  for(const char of text){
+    binary.push(char.charCodeAt(0).toString(2).padStart(8, "0"));
+  }
+
+  output.value = binary.join(" ");
+  info.textContent = "Text converted to binary.";
+}
+
+function copyOutput(){
+  if(!output.value) return;
+  output.select();
+  document.execCommand("copy");
+  info.textContent = "Output copied!";
+}
+
+function clearAll(){
+  input.value = "";
+  output.value = "";
+  info.textContent = "";
+}
+</script>
+
+</body>
+</html>
