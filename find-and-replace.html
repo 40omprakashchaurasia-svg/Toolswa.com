@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Find and Replace – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Find and replace text online for free. Fast and secure Find & Replace tool by Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+/* Inputs */
+textarea{
+  width:100%;
+  min-height:220px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+  resize:vertical;
+}
+
+.inputs{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.inputs input{
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+}
+
+/* Options */
+.options{
+  margin-top:12px;
+  display:flex;
+  gap:20px;
+  font-size:14px;
+}
+.options label{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* Buttons */
+.buttons{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 22px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.secondary{
+  background:#6b7280;
+}
+
+/* Info */
+.info{
+  margin-top:12px;
+  font-size:13px;
+  color:#374151;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Find & Replace</h1>
+    <p class="desc">Find text and replace it instantly.</p>
+
+    <textarea id="text" placeholder="Paste or type your text here..."></textarea>
+
+    <div class="inputs">
+      <input type="text" id="findText" placeholder="Find">
+      <input type="text" id="replaceText" placeholder="Replace with">
+    </div>
+
+    <div class="options">
+      <label>
+        <input type="checkbox" id="caseSensitive">
+        Case sensitive
+      </label>
+    </div>
+
+    <div class="buttons">
+      <button onclick="replaceOne()">Replace One</button>
+      <button onclick="replaceAll()">Replace All</button>
+      <button class="secondary" onclick="copyText()">Copy</button>
+      <button class="secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div id="info" class="info"></div>
+
+    <div class="note">
+      🔒 Text is processed locally in your browser.
+    </div>
+  </div>
+</div>
+
+<script>
+const textEl = document.getElementById("text");
+const findEl = document.getElementById("findText");
+const replaceEl = document.getElementById("replaceText");
+const caseSensitive = document.getElementById("caseSensitive");
+const info = document.getElementById("info");
+
+function getRegex(){
+  if(!findEl.value) return null;
+  const flags = caseSensitive.checked ? "g" : "gi";
+  return new RegExp(findEl.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), flags);
+}
+
+function countMatches(){
+  const regex = getRegex();
+  if(!regex){
+    info.textContent = "";
+    return;
+  }
+  const matches = textEl.value.match(regex);
+  info.textContent = matches ? `${matches.length} match(es) found` : "No matches found";
+}
+
+findEl.addEventListener("input", countMatches);
+textEl.addEventListener("input", countMatches);
+caseSensitive.addEventListener("change", countMatches);
+
+function replaceOne(){
+  if(!findEl.value) return;
+  const flags = caseSensitive.checked ? "" : "i";
+  const regex = new RegExp(findEl.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), flags);
+  textEl.value = textEl.value.replace(regex, replaceEl.value);
+  countMatches();
+}
+
+function replaceAll(){
+  const regex = getRegex();
+  if(!regex) return;
+  textEl.value = textEl.value.replace(regex, replaceEl.value);
+  countMatches();
+}
+
+function clearAll(){
+  textEl.value = "";
+  findEl.value = "";
+  replaceEl.value = "";
+  info.textContent = "";
+}
+
+function copyText(){
+  textEl.select();
+  document.execCommand("copy");
+  alert("Text copied!");
+}
+</script>
+
+</body>
+</html>
