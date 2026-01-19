@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Text Reverser – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Reverse text online. Reverse entire text, words or lines instantly using Toolswa Text Reverser.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+/* Textarea */
+textarea{
+  width:100%;
+  min-height:200px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+  resize:vertical;
+}
+
+/* Buttons */
+.buttons{
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 24px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.secondary{
+  background:#6b7280;
+}
+
+/* Info */
+.info{
+  margin-top:12px;
+  font-size:13px;
+  color:#374151;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Text Reverser</h1>
+    <p class="desc">Reverse text in different ways instantly.</p>
+
+    <textarea id="input" placeholder="Type or paste your text here..."></textarea>
+
+    <div class="buttons">
+      <button onclick="reverseText()">Reverse Text</button>
+      <button onclick="reverseWords()">Reverse Words</button>
+      <button onclick="reverseLines()">Reverse Lines</button>
+      <button class="secondary" onclick="copyOutput()">Copy</button>
+      <button class="secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <textarea id="output" placeholder="Reversed text will appear here..." readonly></textarea>
+
+    <div id="info" class="info"></div>
+
+    <div class="note">
+      🔒 Everything works locally in your browser.
+    </div>
+  </div>
+</div>
+
+<script>
+const input = document.getElementById("input");
+const output = document.getElementById("output");
+const info = document.getElementById("info");
+
+// Reverse full text
+function reverseText(){
+  output.value = input.value.split("").reverse().join("");
+  info.textContent = "Text reversed.";
+}
+
+// Reverse each word
+function reverseWords(){
+  output.value = input.value
+    .split(" ")
+    .map(w => w.split("").reverse().join(""))
+    .join(" ");
+  info.textContent = "Each word reversed.";
+}
+
+// Reverse lines order
+function reverseLines(){
+  output.value = input.value
+    .split("\n")
+    .reverse()
+    .join("\n");
+  info.textContent = "Lines order reversed.";
+}
+
+function copyOutput(){
+  if(!output.value) return;
+  output.select();
+  document.execCommand("copy");
+  info.textContent = "Output copied!";
+}
+
+function clearAll(){
+  input.value = "";
+  output.value = "";
+  info.textContent = "";
+}
+</script>
+
+</body>
+</html>
