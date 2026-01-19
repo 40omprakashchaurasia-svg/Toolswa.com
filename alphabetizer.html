@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Alphabetizer – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Alphabetize text online. Sort lines A to Z or Z to A easily using Toolswa Alphabetizer.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+/* Textarea */
+textarea{
+  width:100%;
+  min-height:220px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+  resize:vertical;
+}
+
+/* Options */
+.options{
+  margin-top:15px;
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  font-size:14px;
+}
+.options label{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* Buttons */
+.buttons{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 22px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.secondary{
+  background:#6b7280;
+}
+
+/* Info */
+.info{
+  margin-top:12px;
+  font-size:13px;
+  color:#374151;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Alphabetizer</h1>
+    <p class="desc">Sort text lines alphabetically (A–Z or Z–A).</p>
+
+    <textarea id="text" placeholder="Enter text here (one item per line)..."></textarea>
+
+    <div class="options">
+      <label>
+        <input type="checkbox" id="caseSensitive">
+        Case sensitive
+      </label>
+    </div>
+
+    <div class="buttons">
+      <button onclick="sortAZ()">Sort A → Z</button>
+      <button onclick="sortZA()">Sort Z → A</button>
+      <button class="secondary" onclick="copyText()">Copy</button>
+      <button class="secondary" onclick="clearText()">Clear</button>
+    </div>
+
+    <div id="info" class="info"></div>
+
+    <div class="note">
+      🔒 Text is processed locally in your browser.
+    </div>
+  </div>
+</div>
+
+<script>
+const textEl = document.getElementById("text");
+const caseSensitive = document.getElementById("caseSensitive");
+const info = document.getElementById("info");
+
+function getLines(){
+  return textEl.value.split("\n").filter(line => line.trim() !== "");
+}
+
+function sortAZ(){
+  let lines = getLines();
+  lines.sort((a,b)=>{
+    if(!caseSensitive.checked){
+      a = a.toLowerCase();
+      b = b.toLowerCase();
+    }
+    return a.localeCompare(b);
+  });
+  textEl.value = lines.join("\n");
+  info.textContent = "Sorted A to Z.";
+}
+
+function sortZA(){
+  let lines = getLines();
+  lines.sort((a,b)=>{
+    if(!caseSensitive.checked){
+      a = a.toLowerCase();
+      b = b.toLowerCase();
+    }
+    return b.localeCompare(a);
+  });
+  textEl.value = lines.join("\n");
+  info.textContent = "Sorted Z to A.";
+}
+
+function clearText(){
+  textEl.value = "";
+  info.textContent = "";
+}
+
+function copyText(){
+  textEl.select();
+  document.execCommand("copy");
+  info.textContent = "Text copied!";
+}
+</script>
+
+</body>
+</html>
