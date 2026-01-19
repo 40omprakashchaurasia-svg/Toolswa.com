@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>QR Generator – Toolswa</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Generate QR codes for text, URL, phone, email and address online for free. Toolswa QR Generator.">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -22,39 +21,28 @@ body{
 .card{
   background:#fff;
   padding:40px;
-  border-radius:22px;
-  box-shadow:0 25px 40px rgba(0,0,0,.08);
+  border-radius:20px;
+  box-shadow:0 20px 35px rgba(0,0,0,.1);
   text-align:center;
 }
-h1{font-size:30px;margin-bottom:8px}
-.desc{color:#6b7280;margin-bottom:25px}
-
 input,select{
   width:100%;
-  padding:12px 14px;
-  margin-bottom:14px;
-  border-radius:12px;
-  border:1px solid #e5e7eb;
-  font-size:14px;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:10px;
+  border:1px solid #ddd;
 }
-
 button{
   background:#e11d48;
   color:#fff;
   border:none;
-  padding:14px 36px;
-  font-size:15px;
-  font-weight:600;
+  padding:14px 35px;
   border-radius:50px;
+  font-size:15px;
   cursor:pointer;
 }
-
-#qrBox{margin-top:30px}
-
-.note{
-  margin-top:18px;
-  font-size:13px;
-  color:#6b7280;
+#qrBox{
+  margin-top:25px;
 }
 </style>
 </head>
@@ -63,17 +51,16 @@ button{
 
 <div class="container">
   <div class="card">
-    <h1>QR Generator</h1>
-    <p class="desc">Generate QR for text, link, phone, email or address.</p>
+    <h2>QR Generator</h2>
 
     <select id="type">
       <option value="text">Text / URL</option>
-      <option value="phone">Phone Number</option>
+      <option value="phone">Phone</option>
       <option value="email">Email</option>
-      <option value="address">Address / Location</option>
+      <option value="address">Address (Map)</option>
     </select>
 
-    <input type="text" id="data" placeholder="Enter text, link or address">
+    <input type="text" id="data" placeholder="Enter text, phone, email or address">
 
     <select id="size">
       <option value="150">Small</option>
@@ -85,44 +72,34 @@ button{
 
     <div id="qrBox"></div>
 
-    <button id="downloadBtn" style="display:none;margin-top:20px" onclick="downloadQR()">Download QR</button>
-
-    <div class="note">
-      🔒 QR code is generated locally in your browser.
-    </div>
+    <button id="downloadBtn" style="display:none;margin-top:15px" onclick="downloadQR()">Download QR</button>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
-let qr;
-
 function generateQR(){
-  const text = document.getElementById("data").value.trim();
+  const data = document.getElementById("data").value.trim();
   const type = document.getElementById("type").value;
   const size = document.getElementById("size").value;
+  const box = document.getElementById("qrBox");
 
-  if(!text){
+  if(!data){
     alert("Please enter value");
     return;
   }
 
-  let value = text;
-
-  if(type === "phone"){
-    value = "tel:" + text;
-  }
-  if(type === "email"){
-    value = "mailto:" + text;
-  }
+  let value = data;
+  if(type === "phone") value = "tel:" + data;
+  if(type === "email") value = "mailto:" + data;
   if(type === "address"){
-    value = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(text);
+    value = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(data);
   }
 
-  document.getElementById("qrBox").innerHTML = "";
+  box.innerHTML = "";
 
-  qr = new QRCode(document.getElementById("qrBox"), {
+  new QRCode(box, {
     text: value,
     width: size,
     height: size
@@ -132,6 +109,28 @@ function generateQR(){
 }
 
 function downloadQR(){
-  const img = document.querySelector("#qrBox img");
-  if(!img) return;
-  con
+  const box = document.getElementById("qrBox");
+  const canvas = box.querySelector("canvas");
+  const img = box.querySelector("img");
+
+  let src = "";
+  if(canvas){
+    src = canvas.toDataURL("image/png");
+  }else if(img){
+    src = img.src;
+  }
+
+  if(!src){
+    alert("QR not found");
+    return;
+  }
+
+  const a = document.createElement("a");
+  a.href = src;
+  a.download = "toolswa-qr.png";
+  a.click();
+}
+</script>
+
+</body>
+</html>
