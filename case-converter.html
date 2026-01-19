@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Case Converter – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free Case Converter tool. Convert text to UPPERCASE, lowercase, Sentence Case, Title Case & Invert Case.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+textarea{
+  width:100%;
+  min-height:220px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+  resize:vertical;
+}
+.buttons{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 22px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.secondary{
+  background:#6b7280;
+}
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Case Converter</h1>
+    <p class="desc">Convert text into different letter cases instantly.</p>
+
+    <textarea id="text" placeholder="Paste or type your text here..."></textarea>
+
+    <div class="buttons">
+      <button onclick="toUpper()">UPPERCASE</button>
+      <button onclick="toLower()">lowercase</button>
+      <button onclick="toSentence()">Sentence Case</button>
+      <button onclick="toTitle()">Title Case</button>
+      <button onclick="invertCase()">Invert Case</button>
+      <button class="secondary" onclick="copyText()">Copy</button>
+      <button class="secondary" onclick="clearText()">Clear</button>
+    </div>
+
+    <div class="note">🔒 Text stays in your browser. No data is saved.</div>
+  </div>
+</div>
+
+<script>
+const text = document.getElementById("text");
+
+function toUpper(){
+  text.value = text.value.toUpperCase();
+}
+function toLower(){
+  text.value = text.value.toLowerCase();
+}
+function toSentence(){
+  text.value = text.value
+    .toLowerCase()
+    .replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase());
+}
+function toTitle(){
+  text.value = text.value
+    .toLowerCase()
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+function invertCase(){
+  let out = "";
+  for(let c of text.value){
+    out += c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase();
+  }
+  text.value = out;
+}
+function clearText(){
+  text.value = "";
+}
+function copyText(){
+  text.select();
+  document.execCommand("copy");
+  alert("Copied!");
+}
+</script>
+
+</body>
+</html>
