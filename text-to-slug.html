@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Text to Slug Converter – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Convert text to SEO friendly URL slug online for free. Text to Slug Generator by Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:800px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+/* Inputs */
+input{
+  width:100%;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+  margin-bottom:20px;
+}
+
+/* Buttons */
+.buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 24px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.secondary{
+  background:#6b7280;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Text to Slug</h1>
+    <p class="desc">Convert any text into an SEO-friendly URL slug.</p>
+
+    <input type="text" id="textInput" placeholder="Enter text here...">
+    <input type="text" id="slugOutput" placeholder="Slug will appear here..." readonly>
+
+    <div class="buttons">
+      <button onclick="generateSlug()">Generate Slug</button>
+      <button class="secondary" onclick="copySlug()">Copy</button>
+      <button class="secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div class="note">
+      🔒 Everything runs locally in your browser. No data is saved.
+    </div>
+  </div>
+</div>
+
+<script>
+const textInput = document.getElementById("textInput");
+const slugOutput = document.getElementById("slugOutput");
+
+function generateSlug(){
+  let text = textInput.value;
+
+  if(!text){
+    slugOutput.value = "";
+    return;
+  }
+
+  // Convert to slug
+  let slug = text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")   // remove special chars
+    .replace(/\s+/g, "-")           // spaces to hyphen
+    .replace(/-+/g, "-");           // remove multiple hyphens
+
+  slugOutput.value = slug;
+}
+
+function copySlug(){
+  if(!slugOutput.value) return;
+  slugOutput.select();
+  document.execCommand("copy");
+  alert("Slug copied!");
+}
+
+function clearAll(){
+  textInput.value = "";
+  slugOutput.value = "";
+}
+</script>
+
+</body>
+</html>
