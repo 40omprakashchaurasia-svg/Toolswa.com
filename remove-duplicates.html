@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Remove Duplicates – Toolswa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Remove duplicate lines from text online for free. Fast and secure Remove Duplicates tool by Toolswa.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:#f3f4f6;
+}
+.container{
+  max-width:900px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.card{
+  background:#fff;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 25px 40px rgba(0,0,0,.08);
+}
+h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.desc{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+textarea{
+  width:100%;
+  min-height:220px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+  resize:vertical;
+}
+
+/* Options */
+.options{
+  margin-top:15px;
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  font-size:14px;
+}
+.options label{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* Buttons */
+.buttons{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  padding:12px 22px;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50px;
+  cursor:pointer;
+}
+.secondary{
+  background:#6b7280;
+}
+
+.note{
+  margin-top:18px;
+  font-size:13px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Remove Duplicates</h1>
+    <p class="desc">Remove duplicate lines from your text instantly.</p>
+
+    <textarea id="inputText" placeholder="Paste your text here (one item per line)..."></textarea>
+
+    <div class="options">
+      <label>
+        <input type="checkbox" id="caseSensitive">
+        Case sensitive
+      </label>
+    </div>
+
+    <div class="buttons">
+      <button onclick="removeDuplicates()">Remove Duplicates</button>
+      <button class="secondary" onclick="copyText()">Copy</button>
+      <button class="secondary" onclick="clearText()">Clear</button>
+    </div>
+
+    <div class="note">
+      🔒 Text is processed locally in your browser.
+    </div>
+  </div>
+</div>
+
+<script>
+const input = document.getElementById("inputText");
+const caseSensitive = document.getElementById("caseSensitive");
+
+function removeDuplicates(){
+  const lines = input.value.split("\n");
+  const seen = new Set();
+  const result = [];
+
+  lines.forEach(line => {
+    const key = caseSensitive.checked ? line : line.toLowerCase();
+    if(!seen.has(key)){
+      seen.add(key);
+      result.push(line);
+    }
+  });
+
+  input.value = result.join("\n");
+}
+
+function clearText(){
+  input.value = "";
+}
+
+function copyText(){
+  input.select();
+  document.execCommand("copy");
+  alert("Text copied!");
+}
+</script>
+
+</body>
+</html>
